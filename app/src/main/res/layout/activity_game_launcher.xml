@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/activity_game_launcher_scene"
-    tools:context=".GameLauncher">
+    tools:context=".GameActivity">
 
    <com.example.myapplication.MyGame
        android:layout_width="match_parent"

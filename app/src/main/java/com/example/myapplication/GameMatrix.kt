@@ -1,13 +1,14 @@
 package com.example.myapplication
 
 import android.util.Log
+import babacan.Game.MyLine
 import babacan.Game.MyPath
 import babacan.Game.abs
 
 object GameMatrix {
     private var x=0
     private var y=0
-    val matrix = Array(1920) { Array(1080) { 0 } }
+    val matrix = Array(3000) { Array(3000) { 0 } }
 
     var isIntersection:Boolean=false
 
@@ -30,14 +31,18 @@ object GameMatrix {
                 y+=increaseY
                 matrix[x][y]+=1
             }
-            if(matrix[x][y]==2) isIntersection=true
+            if(matrix[x][y]==2) {
+                isIntersection=true
+                Log.i("KESİŞME!!","BİR ADET KESİŞME")
+            }
+
         }
 
 
 
     }
-    fun addPath ( path: MyPath){
-        path.lines.forEach{line->addLine(line.p1.x.toInt(), line.p1.y.toInt(),
+    fun addLines( lines: List<MyLine>){
+        lines.forEach{line->addLine(line.p1.x.toInt(), line.p1.y.toInt(),
             line.p2.x.toInt(), line.p2.y.toInt()
         )}
     }

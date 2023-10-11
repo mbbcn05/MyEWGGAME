@@ -1,8 +1,9 @@
 package babacan.Game
 
 import android.util.Log
+import com.example.myapplication.MyGame
 
-class MyRectangle ( val p1:MyPoint,val width: Float =150f, val height: Float =150f){
+class MyRectangle (val p1:MyPoint, val width: Float = MyGame.x/10f, val height: Float =MyGame.y/7f){
 
 
     val points=listOf<MyPoint>(p1,MyPoint(p1.x+width,p1.y),MyPoint(p1.x+width,p1.y+height),

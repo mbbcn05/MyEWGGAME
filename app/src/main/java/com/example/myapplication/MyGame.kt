@@ -6,12 +6,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Xfermode
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import androidx.annotation.RequiresApi
 import babacan.Game.MyPath
 import babacan.Game.MyPoint
 
@@ -49,8 +51,10 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
 
 
 
+
     constructor(context: Context?) : super(context) {
         init(context)
+
     }
 
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {
@@ -64,7 +68,6 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
     ) {
         init(context)
     }
-
     @TargetApi(21)
     constructor(
         context: Context?,
@@ -75,6 +78,7 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
         init(context)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun init(c: Context?) {
         context = c
         val holder = getHolder()
@@ -82,10 +86,18 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
         isFocusable = true
         houseBitmap=BitmapFactory.decodeResource(resources, R.drawable.house)
         sourceBitmap=BitmapFactory.decodeResource(resources,R.drawable.source)
-        scaledHouse=Bitmap.createScaledBitmap(houseBitmap,150,150,true)
-        scaledSource=Bitmap.createScaledBitmap(sourceBitmap,150,150,true)
+        scaledHouse=Bitmap.createScaledBitmap(houseBitmap,MyGame.x/10,MyGame.y/7,true)
+        scaledSource=Bitmap.createScaledBitmap(sourceBitmap,MyGame.x/10,MyGame.y/7,true)
         houseBitmap.recycle()
         sourceBitmap.recycle()
+        mPaint.setAntiAlias(true)
+         mPaint.setDither(true)
+
+        mPaint.setColor(getResources().getColor(R.color.purple_700))
+         mPaint.setStyle(Paint.Style.STROKE)
+        //mPaint.setStrokeJoin(Paint.Join.ROUND)
+        // mPaint.setStrokeCap(Paint.Cap.ROUND)
+         mPaint.setStrokeWidth(5f)
 
 
     }
@@ -143,7 +155,7 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
         when (event.action) {
 
             MotionEvent.ACTION_DOWN -> {
-
+                Log.i("ekran boyutları","${GameActivity.x}  ${GameActivity.y}")
                 if (Game.creathingPath == null) Game.handleSourceSelecting(
                     MyPoint(
                         event.x,
@@ -257,7 +269,9 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
         /**
          * Time per frame for 60 FPS
          */
-        private const val MAX_FRAME_TIME = (1000.0 / 60.0).toInt()
+        var y=GameActivity.y
+        var x=GameActivity.x
+        private const val MAX_FRAME_TIME = (1000.0 / 70.0).toInt()
         private const val LOGTAG = "surface"
     }
 
@@ -277,17 +291,19 @@ var list= Game.myPathList.toList()
     }
 
     private inline fun drawSources(canvas: Canvas) {
-        Game.sources.forEach{canvas.drawBitmap(scaledSource,it.shape.p1.x,it.shape.p1.y,mPaint)}
+        Game.sources.forEach{canvas.drawBitmap(scaledSource,it.shape.p1.x,it.shape.p1.y,null)}
 
     }
 
     private inline fun drawHouses(canvas: Canvas) {
-        Game.houses.forEach{canvas.drawBitmap(scaledHouse,it.rectangle.p1.x,it.rectangle.p1.y,mPaint)}
+        Game.houses.forEach{canvas.drawBitmap(scaledHouse,it.rectangle.p1.x,it.rectangle.p1.y,null)}
     }
 
 
     private fun drawCountDown(canvas: Canvas) {
         Math.round(Game.countDown.second).toString()
-        canvas.drawText(Math.round(Game.countDown.second).toString(),30f,50f,mPaint)
+        canvas.drawText(Math.round(Game.countDown.second).toString(),30f,50f,Paint())
     }
+
+
 }
