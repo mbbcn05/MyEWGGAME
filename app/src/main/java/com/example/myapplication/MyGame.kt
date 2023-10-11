@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import babacan.Game.MyPath
 import babacan.Game.MyPoint
 
 class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
@@ -86,23 +87,24 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
         houseBitmap.recycle()
         sourceBitmap.recycle()
 
+
     }
 
     fun render(canvas: Canvas) {
         canvas.drawRGB(255,255,255)
 
-
+        drawPaths(canvas)
         drawHouses(canvas)
         drawSources(canvas)
 
 
-        drawPaths(canvas)
+
         drawCountDown(canvas)
-        Game.countDown.updateTime()
+
     }
 
     fun tick() {
-
+        Game.countDown.updateTime()
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
@@ -138,26 +140,38 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
-        when(event.action){
+        when (event.action) {
 
-            MotionEvent.ACTION_DOWN->{
+            MotionEvent.ACTION_DOWN -> {
 
-                if(Game.creathingPath==null) Game.handleSourceSelecting(MyPoint(event.x,event.y))
+                if (Game.creathingPath == null) Game.handleSourceSelecting(
+                    MyPoint(
+                        event.x,
+                        event.y
+                    )
+                )
             }
-            MotionEvent.ACTION_MOVE->{
-                Game.creathingPath?.let { Game.handleSourceMoving(event.x,event.y)
 
+            MotionEvent.ACTION_MOVE -> {
+                Game.creathingPath?.let {
+                    Game.handleSourceMoving(event.x, event.y)
+
+
+                }
+
+            }
+
+            MotionEvent.ACTION_UP -> {
+
+                Game.creathingPath?.let {
+                    Log.i("kaldırma", "kaldırma başarılı")
+                    Game.handleHouseSelecting(MyPoint(event.x, event.y))
                 }
 
 
             }
-            MotionEvent.ACTION_UP->{
 
-                Game.creathingPath?.let {
-                    Log.i("kaldırma","kaldırma başarılı")
-                    Game.handleHouseSelecting(MyPoint(event.x,event.y))}
 
-            }
 
         }
         return true
@@ -218,8 +232,9 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
             if (canvas != null) {
                 try {
                     synchronized(getHolder()) {
-                        tick()
+
                         render(canvas)
+                        tick()
                     }
                 } finally {
                     getHolder().unlockCanvasAndPost(canvas)
@@ -246,21 +261,33 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
         private const val LOGTAG = "surface"
     }
 
-    private fun drawPaths(canvas: Canvas) {
+    /*private inline fun drawPaths(canvas: Canvas) {
         Game.myPathList.forEach{path->path.lines.forEach{line->canvas.drawLine(line.p1.x,line.p1.y,line.p2.x,line.p2.y,mPaint)}}
-        Game.creathingPath?.let{it.lines.forEach{line->canvas.drawLine(line.p1.x,line.p1.y,line.p2.x,line.p2.y,mPaint)}}
+       Game.creathingPath?.let{it.lines.forEach{line->canvas.drawLine(line.p1.x,line.p1.y,line.p2.x,line.p2.y,mPaint)}}
+    }*/
+    private inline fun drawPaths(canvas: Canvas) {
+
+var list= Game.myPathList.toList()
+
+            .forEach{path->path.lines.forEach{line->canvas.drawLine(line.p1.x,line.p1.y,line.p2.x,line.p2.y,mPaint)}}
+
+
+
+        Game.creathingPath?.let{val lines=it.lines.toList().forEach{line->canvas.drawLine(line.p1.x,line.p1.y,line.p2.x,line.p2.y,mPaint)}}
     }
 
-    private fun drawSources(canvas: Canvas) {
+    private inline fun drawSources(canvas: Canvas) {
         Game.sources.forEach{canvas.drawBitmap(scaledSource,it.shape.p1.x,it.shape.p1.y,mPaint)}
 
     }
 
-    private fun drawHouses(canvas: Canvas) {
+    private inline fun drawHouses(canvas: Canvas) {
         Game.houses.forEach{canvas.drawBitmap(scaledHouse,it.rectangle.p1.x,it.rectangle.p1.y,mPaint)}
     }
 
 
-    private fun drawCountDown(canvas: Canvas) {canvas.drawText(Game.countDown.second.toString(),30f,50f,mPaint)
+    private fun drawCountDown(canvas: Canvas) {
+        Math.round(Game.countDown.second).toString()
+        canvas.drawText(Math.round(Game.countDown.second).toString(),30f,50f,mPaint)
     }
 }

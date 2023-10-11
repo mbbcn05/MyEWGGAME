@@ -6,17 +6,17 @@ import android.view.WindowManager
 
 
 class GameActivity : Activity() {
-    private lateinit var gameView: MyGame
+  // private lateinit var gameView: MyGame
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        gameView = MyGame(this)
+    //    gameView = MyGame(this)
 
         getWindow().setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        setContentView(gameView)
+        setContentView(R.layout.activity_game_launcher)
     }
 }

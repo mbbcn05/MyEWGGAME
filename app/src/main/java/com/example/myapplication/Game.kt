@@ -58,29 +58,35 @@ object Game {
         //}
 
         fun handleHouseSelecting(point: MyPoint) {
-
+            var houseSelecting=false
             houses.forEach {
                 if (it.rectangle.isPointInRectangle(point) && it.acceptIfNotContained(creathingPath!!.source)) {
+                    houseSelecting=true
                     creathingPath!!.apply {
-                        clipLinesInRectangle(it.rectangle)
-                        clipLinesInRectangle(this.source.shape)
+                       // clipLinesInRectangle(it.rectangle)
+                        //clipLinesInRectangle(this.source.shape)
                        // GameMatrix.addPath(this)
-                        if (GameMatrix.isIntersection) {
-                            Log.i("houseselecting","intersection oldu")
-                            gameOver = true
-                        } else {
+                        //if (GameMatrix.isIntersection) {
+                          //  Log.i("houseselecting","intersection oldu")
+                            //gameOver = true
+                        //} else {
                             Log.i("houseselecting","sounsuz pathliste eklendi")
                             myPathList.add(this)
-                            creathingPath = null
-                        }
+                        creathingPath = null
+return
+                        //}
 
                     }
 
                 } else {
                     //gameOver = true
-                   // Log.i("houseselecting","house seçilemedi")
-                   // creathingPath = null
+                    Log.i("houseselecting","Game Over")
+
                 }
             }
+            if(!houseSelecting){
+            creathingPath=null
+            }
+
         }
     }

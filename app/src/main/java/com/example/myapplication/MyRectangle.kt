@@ -1,5 +1,7 @@
 package babacan.Game
 
+import android.util.Log
+
 class MyRectangle ( val p1:MyPoint,val width: Float =150f, val height: Float =150f){
 
 
@@ -14,6 +16,7 @@ class MyRectangle ( val p1:MyPoint,val width: Float =150f, val height: Float =15
 
     fun contains(point: MyPoint):Boolean= distanceTo(point).toFloat() ==width+height
     fun isPointInRectangle(point:MyPoint):Boolean{
-        return point.x> p1.x &&point.x<p1.x+width&&point.y>p1.y&&point.y<p1.y+height
+
+        return (point.x> p1.x &&point.x<p1.x+width&&point.y>p1.y&&point.y<p1.y+height).apply{if(this) {Log.i("kare","kare seçildi")}}
     }
 }
