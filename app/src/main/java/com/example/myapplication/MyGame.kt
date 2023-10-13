@@ -111,9 +111,9 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
 
         mPaint.setColor(Color.argb(255, 0, 0, 10))
          mPaint.setStyle(Paint.Style.STROKE)
-        mPaint.setStrokeWidth(5f)
+        mPaint.setStrokeWidth(3f)
 
-        mPaint.setStrokeWidth(5f)
+
         textPaint.setColor(Color.argb(100, 10, 100, 10));
         textPaint.setTextSize(MyGame.x/30f)
         textPaint.setAntiAlias(true)

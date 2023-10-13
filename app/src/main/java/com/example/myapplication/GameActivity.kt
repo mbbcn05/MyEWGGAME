@@ -9,9 +9,11 @@ import android.view.WindowManager
 class GameActivity : Activity() {
   // private lateinit var gameView: MyGame
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
 
-
+      setTheme(R.style.AppTheme)
     //    gameView = MyGame(this)
    x = getResources().getDisplayMetrics().widthPixels
     y = getResources().getDisplayMetrics().heightPixels

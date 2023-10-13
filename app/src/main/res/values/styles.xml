@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Ana tema ayarları -->
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Splash ekranı teması ayarları -->
+        <item name="android:windowBackground">@drawable/gas</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+
+</resources>
