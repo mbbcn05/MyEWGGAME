@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Xfermode
 import android.os.Build
@@ -23,12 +24,18 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
      */
     private var holder: SurfaceHolder? = null
     private val mPaint:Paint= Paint()
+    private val textPaint:Paint= Paint()
+
     //private val gestures=GestureDetectorCompat(context,GestureListener())
     private lateinit var canvas:Canvas
     lateinit var houseBitmap:Bitmap
-    lateinit var sourceBitmap: Bitmap
+    lateinit var electricBitmap: Bitmap
     lateinit var scaledHouse:Bitmap
-    lateinit var scaledSource:Bitmap
+    lateinit var scaledElectric:Bitmap
+    lateinit var scaledWater:Bitmap
+    lateinit var waterBitmap: Bitmap
+    lateinit var gasBitmap: Bitmap
+    lateinit var scaledGas:Bitmap
 
 
     /**
@@ -85,19 +92,31 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
         holder.addCallback(this)
         isFocusable = true
         houseBitmap=BitmapFactory.decodeResource(resources, R.drawable.house)
-        sourceBitmap=BitmapFactory.decodeResource(resources,R.drawable.source)
+        electricBitmap=BitmapFactory.decodeResource(resources,R.drawable.electric)
+        waterBitmap=BitmapFactory.decodeResource(resources,R.drawable.water)
         scaledHouse=Bitmap.createScaledBitmap(houseBitmap,MyGame.x/10,MyGame.y/7,true)
-        scaledSource=Bitmap.createScaledBitmap(sourceBitmap,MyGame.x/10,MyGame.y/7,true)
+        scaledElectric=Bitmap.createScaledBitmap(electricBitmap,MyGame.x/10,MyGame.y/7,true)
+        scaledWater=Bitmap.createScaledBitmap(waterBitmap,MyGame.x/10,MyGame.y/7,true)
+       gasBitmap=BitmapFactory.decodeResource(resources,R.drawable.gas)
+        scaledGas=Bitmap.createScaledBitmap(gasBitmap,MyGame.x/10,MyGame.y/7,true)
+
+
         houseBitmap.recycle()
-        sourceBitmap.recycle()
+        electricBitmap.recycle()
+        waterBitmap.recycle()
+        gasBitmap.recycle()
+
         mPaint.setAntiAlias(true)
          mPaint.setDither(true)
 
-        mPaint.setColor(getResources().getColor(R.color.purple_700))
+        mPaint.setColor(Color.argb(255, 0, 0, 10))
          mPaint.setStyle(Paint.Style.STROKE)
-        //mPaint.setStrokeJoin(Paint.Join.ROUND)
-        // mPaint.setStrokeCap(Paint.Cap.ROUND)
-         mPaint.setStrokeWidth(5f)
+        mPaint.setStrokeWidth(5f)
+
+        mPaint.setStrokeWidth(5f)
+        textPaint.setColor(Color.argb(100, 10, 100, 10));
+        textPaint.setTextSize(MyGame.x/30f)
+        textPaint.setAntiAlias(true)
 
 
     }
@@ -271,7 +290,7 @@ class MyGame : SurfaceView, SurfaceHolder.Callback, Runnable {
          */
         var y=GameActivity.y
         var x=GameActivity.x
-        private const val MAX_FRAME_TIME = (1000.0 / 70.0).toInt()
+        private const val MAX_FRAME_TIME = (1000.0 / 20.0).toInt()
         private const val LOGTAG = "surface"
     }
 
@@ -289,10 +308,21 @@ var list= Game.myPathList.toList()
 
         Game.creathingPath?.let{val lines=it.lines.toList().forEach{line->canvas.drawLine(line.p1.x,line.p1.y,line.p2.x,line.p2.y,mPaint)}}
     }
-
+    var x=1
     private inline fun drawSources(canvas: Canvas) {
-        Game.sources.forEach{canvas.drawBitmap(scaledSource,it.shape.p1.x,it.shape.p1.y,null)}
+        Game.sources.forEach{
+            if(x==2){
+                canvas.drawBitmap(scaledWater,it.shape.p1.x,it.shape.p1.y,null)
 
+            }else if(x==3){
+                canvas.drawBitmap(scaledGas,it.shape.p1.x,it.shape.p1.y,null)}
+            else{
+
+                    canvas.drawBitmap(scaledElectric,it.shape.p1.x,it.shape.p1.y,null)}
+        x=x+1
+
+        }
+x=1
     }
 
     private inline fun drawHouses(canvas: Canvas) {
@@ -302,7 +332,8 @@ var list= Game.myPathList.toList()
 
     private fun drawCountDown(canvas: Canvas) {
         Math.round(Game.countDown.second).toString()
-        canvas.drawText(Math.round(Game.countDown.second).toString(),30f,50f,Paint())
+        canvas.drawText(Math.round(Game.countDown.second).toString(),MyGame.x/30f,MyGame.y/20f
+            ,textPaint)
     }
 
 

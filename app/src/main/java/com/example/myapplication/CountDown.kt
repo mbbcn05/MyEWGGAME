@@ -5,7 +5,7 @@ import babacan.Game.MyPath
 class CountDown {
     var second:Double=10.00
 
-    val frameTime=0.015
+    val frameTime=0.05
     fun updateTime(){
         second-=frameTime
         if(second<0){

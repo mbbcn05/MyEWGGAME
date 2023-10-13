@@ -79,19 +79,19 @@ object Game {
     fun handleHouseSelecting(point: MyPoint) {
         var houseSelecting=false
         houses.forEach {
-            if (it.rectangle.isPointInRectangle(point) && it.acceptIfNotContained(creathingPath!!.source)&&! creathingPath!!.intersectsWithPaths(myPathList)) {
+            if (it.rectangle.isPointInRectangle(point) &&! creathingPath!!.intersectsWithPaths(myPathList)&& it.acceptIfNotContained(creathingPath!!.source)) {
                 houseSelecting=true
                 creathingPath!!.apply {
 
 
 
 
-                    // GameMatrix.addLines(clipLinesInRectangle(it.rectangle,this.source.shape)){
+                     //clipLinesInRectangle(it.rectangle,this.source.shape)
                     //  Log.i("houseselecting","intersection oldu")
                     //gameOver = true
                     //} else {
                     Log.i("houseselecting","sounsuz pathliste eklendi")
-                    myPathList.add(this)
+                    myPathList.add(clipLinesInRectangle(it.rectangle,this.source.shape))
                     creathingPath = null
                     countDown.refreshTime()
                     return
