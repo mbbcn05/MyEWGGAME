@@ -4,10 +4,10 @@ import android.icu.lang.UCharacter.LineBreak
 import java.nio.file.Path
 
 
-class MyPath (val source:GameSource){
-    var lines= mutableListOf<MyLine>()
-var point:MyPoint?=null
-   suspend fun clipLinesInRectangle(rectangle: MyRectangle,rectangle2:MyRectangle): MutableList<MyLine> {
+class MyPath (val source:GameSource) {
+    var lines = mutableListOf<MyLine>()
+    var point: MyPoint? = null
+    fun clipLinesInRectangle(rectangle: MyRectangle, rectangle2: MyRectangle): MyPath {
         var path = MyPath(source)
         val removingLines = mutableListOf<MyLine>()
         lines.forEach { line ->
@@ -16,21 +16,29 @@ var point:MyPoint?=null
             ) {
                 removingLines.add(line)
             }
-             path.lines.addAll(lines)
-                path.lines.removeAll((removingLines))
+            path.lines.addAll(lines)
+            path.lines.removeAll((removingLines))
             //lines.removeAll(removingLines)
 
 
         }
-        return path.lines
+        return path
     }
 
-    fun addLines(x:Float,y:Float){
+    fun addLines(x: Float, y: Float) {
 
-        if(point!=null){
-            lines.add(MyLine(point!!,MyPoint(x,y)))
+        if (point != null) {
+            lines.add(MyLine(point!!, MyPoint(x, y)))
 
         }
-        point=MyPoint(x,y)
+        point = MyPoint(x, y)
     }
+
+
+    fun intersectWithLine(line: MyLine): Boolean =
+        lines.count { ln -> doLinesIntersect(ln.p1, ln.p2,line.p1,line.p2) } > 0
+
+    fun intersects(other: MyPath) = other.lines.count { line -> intersectWithLine(line) } > 0
+fun intersectsWithPaths(paths:List<MyPath>):Boolean=paths.count{path->intersects(path)}>0
+
 }

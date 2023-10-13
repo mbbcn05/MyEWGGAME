@@ -8,6 +8,7 @@ import babacan.Game.MyRectangle
 import babacan.Game.SourceType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 object Game {
@@ -78,20 +79,14 @@ object Game {
     fun handleHouseSelecting(point: MyPoint) {
         var houseSelecting=false
         houses.forEach {
-            if (it.rectangle.isPointInRectangle(point) && it.acceptIfNotContained(creathingPath!!.source)) {
+            if (it.rectangle.isPointInRectangle(point) && it.acceptIfNotContained(creathingPath!!.source)&&! creathingPath!!.intersectsWithPaths(myPathList)) {
                 houseSelecting=true
                 creathingPath!!.apply {
 
-                /*    CoroutineScope(Dispatchers.IO).launch {
-                        //GameMatrix.addLines(clipLinesInRectangle(it.rectangle, creathingPath.let{source.shape}))
-                        GameMatrix.addLines(creathingPath!!.lines)
-                    }*/
 
 
 
-
-                    // GameMatrix.addLines(clipLinesInRectangle(it.rectangle,this.source.shape))
-                    //if (GameMatrix.isIntersection) {
+                    // GameMatrix.addLines(clipLinesInRectangle(it.rectangle,this.source.shape)){
                     //  Log.i("houseselecting","intersection oldu")
                     //gameOver = true
                     //} else {
@@ -100,13 +95,9 @@ object Game {
                     creathingPath = null
                     countDown.refreshTime()
                     return
-                    //}
+
 
                 }
-
-            } else {
-                //gameOver = true
-                Log.i("houseselecting","Game Over")
 
             }
         }

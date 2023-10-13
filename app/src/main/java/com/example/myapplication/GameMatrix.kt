@@ -8,7 +8,11 @@ import babacan.Game.abs
 object GameMatrix {
     private var x=0
     private var y=0
-    val matrix = Array(3000) { Array(3000) { 0 } }
+    //val matrix = Array(3000) { Array(3000) { 0 } }
+   val matrix = Array(30000) { ByteArray(30000) }
+    //val matrix = ByteArray(3000 * 3000)
+
+
 
     var isIntersection:Boolean=false
 
@@ -26,12 +30,12 @@ object GameMatrix {
 
             if (distantX().abs() > distantY().abs()){
                 x+=increaseX
-                matrix[x][y]+=1
+                matrix[x][y] = (matrix[x][y] + 1).toByte()
             }else{
                 y+=increaseY
-                matrix[x][y]+=1
+                matrix[x][y] = (matrix[x][y] + 1).toByte()
             }
-            if(matrix[x][y]==2) {
+            if(matrix[x][y]==2.toByte()) {
                 isIntersection=true
                 Log.i("KESİŞME!!","BİR ADET KESİŞME")
             }
